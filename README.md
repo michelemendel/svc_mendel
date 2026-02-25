@@ -1,2 +1,2 @@
-# svc_mendel
-svcollege labs, homework, etc
+# SV College: Labs, Homework, etc...
+
