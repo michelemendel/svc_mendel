@@ -1,2 +1,1 @@
-# SV College: Labs, Homework, etc...
-
+# SV College: Labs, Homeworks, etc
