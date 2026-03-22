@@ -5,8 +5,13 @@
 2. Run it without Docker
    - `py hw.py`
 3. Wrap it with docker image
-   - `docker build -t hw .`
+   - `d build -t hw .`
 4. Docker run
-   - `docker run --rm hw`
+   - `d run --rm hw`
 5. Make sure your get output based on print
    - ok
+
+## Bonus
+
+- `d build -t mmendel/svc-helloworld:1.00 .`
+- `d push mmendel/svc-helloworld:1.00`
