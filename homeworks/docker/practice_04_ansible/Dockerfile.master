@@ -1,0 +1,10 @@
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y \
+    ansible \
+    sshpass \
+    openssh-client \
+    python3
+
+# This keeps the container running so we can exec into it
+CMD ["tail", "-f", "/dev/null"]
