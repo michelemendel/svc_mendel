@@ -7,6 +7,8 @@
 
 Ansible is an automation engine used for configuration management, application deployment, and task automation.
 
+With Ansible you control a set of managed (slave) nodes from inside a control (master) node.
+
 Think of it as a "remote control" for servers. Instead of logging into 50 different computers to install a piece of software one by one, you write a script (called a Playbook) on your "Master" machine, and Ansible pushes those changes to all the "Slave" machines simultaneously.
 
 Key characteristic: It is agentless. You don't need to install special Ansible software on the servers you want to manage; it usually just needs an SSH connection and Python.
@@ -32,12 +34,14 @@ d network inspect ansible-net
 # Containers.Name..Name=slave-node.IPv4Address = 192.168.117.2/24
 
 # Go inside the Master container and create the Inventory file that your instructor mentioned.
-# The inventory file is like a phone book for Ansible. It tells it which slaves exist and how to talk to them.
 d exec -it master-node bash
 
+# ------------------------------
 # We are now in master container
+# ------------------------------
 
 # Create inventory configuration file
+# The inventory file is like a phone book for Ansible. It tells it which slaves exist and how to talk to them.
 cat <<EOF > hosts
 [all_slaves]
 192.168.117.2 ansible_user=root ansible_password=password

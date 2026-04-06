@@ -12,5 +12,8 @@ __pycache__
 *.pyw
 *.pyz
 
+# trunk
+.trunk/
+
 # Environment variables
 .env
