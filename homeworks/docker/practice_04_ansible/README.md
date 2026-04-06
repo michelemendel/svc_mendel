@@ -2,7 +2,6 @@
 
 - [Ansible community documentation](https://docs.ansible.com/)
 - [docs index](https://docs.ansible.com/projects/ansible/latest/index.html)
-- [gemini](https://shorturl.at/N6LLr)
 
 ## What exactly is Ansible?
 
@@ -12,7 +11,7 @@ Think of it as a "remote control" for servers. Instead of logging into 50 differ
 
 Key characteristic: It is agentless. You don't need to install special Ansible software on the servers you want to manage; it usually just needs an SSH connection and Python.
 
-## Practive
+## Practice
 
 ```bash
 # Create a network
@@ -33,7 +32,7 @@ d network inspect ansible-net
 # Containers.Name..Name=slave-node.IPv4Address = 192.168.117.2/24
 
 # Go inside the Master container and create the Inventory file that your instructor mentioned.
-# The inventory file is basically a phone book for Ansible; it tells it which "Slaves" exist and how to talk to them.
+# The inventory file is like a phone book for Ansible. It tells it which slaves exist and how to talk to them.
 d exec -it master-node bash
 
 # We are now in master container
@@ -45,7 +44,7 @@ cat <<EOF > hosts
 EOF
 
 # Test via ansible ping
-export ANSIBLE_HOST_KEY_CHECKING=False
+export ANSIBLE_HOST_KEY_CHECKING=False # accept all connections
 ansible -i hosts -m ping all
 # 192.168.117.2 | SUCCESS => {
 #     "ansible_facts": {
