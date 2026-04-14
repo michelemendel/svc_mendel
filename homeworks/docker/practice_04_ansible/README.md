@@ -16,7 +16,7 @@ Key characteristic: It is agentless. You don't need to install special Ansible s
 ## Practice
 
 ```bash
-# Create a network
+# Create a network to use DNS and not IP
 d network create ansible-net
 
 # Create dockerfiles for slave and master
@@ -44,7 +44,7 @@ d exec -it master-node bash
 # The inventory file is like a phone book for Ansible. It tells it which slaves exist and how to talk to them.
 cat <<EOF > hosts
 [all_slaves]
-192.168.117.2 ansible_user=root ansible_password=password
+slave-node ansible_user=root ansible_password=password
 EOF
 
 # Test via ansible ping
@@ -84,4 +84,68 @@ ssh root@192.168.117.2
 # Inspect master to get IP: 192.168.117.3
 # Note: this doesn't work since Dockerfile.master doesn't install and start ssh
 ssh root@192.168.117.3
+```
+
+## Things to fix
+
+### use DNS
+
+This comes automatically from using a created network
+
+### use ssh key-pair, not un/pw
+
+- On host create a ssh key-pair
+  - `ssh-keygen -t rsa -f ./ansible_key`
+
+- Fix Docker.slave: All slaves will get the pub key through the Dockerfile.slave
+
+```bash
+FROM ubuntu:22.04
+RUN apt-get update && apt-get install -y openssh-server python3 sudo
+RUN mkdir /var/run/sshd && mkdir -p /root/.ssh
+
+# Copy your local public key into the slave's authorized_keys
+COPY ansible_key.pub /root/.ssh/authorized_keys
+RUN chmod 600 /root/.ssh/authorized_keys
+
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+```
+
+- The master will get the priv key at startup
+
+```bash
+d run -d \
+--name master-node \
+--network ansible-net \
+-v $(pwd)/ansible_key:/root/.ssh/id_rsa \
+ansible-master`
+```
+
+- Also, update Inventory
+
+```bash
+[all_slaves]
+slave-node ansible_user=root
+```
+
+### Hosts should be installed as volume, not manually created inside master
+
+```bash
+# Using :ro for read-only
+
+d run -d \
+--name master-node \
+--network ansible-net \
+-v $(pwd)/ansible_key:/root/.ssh/id_rsa:ro \
+-v $(pwd)/hosts:/etc/ansible/hosts:ro \
+ansible-master
+```
+
+Don't forget to create `hosts` in the project file
+
+```bash
+[all_slaves]
+slave-node ansible_user=root
 ```
