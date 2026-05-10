@@ -1,0 +1,14 @@
+FROM ubuntu:22.04
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    ansible \
+    sshpass \
+    openssh-client \
+    python3 \
+    curl \
+  && rm -rf /var/lib/apt/lists/*
+
+# This keeps the container running so we can exec into it
+CMD ["tail", "-f", "/dev/null"]

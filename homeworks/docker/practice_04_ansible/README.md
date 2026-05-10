@@ -30,7 +30,8 @@ d run -d --name slave-node --network ansible-net ansible-slave
 d run -d --name master-node --network ansible-net ansible-master
 
 # Get slave IP
-d network inspect ansible-net
+# NOTE: Not necessary when we use the DNS of the new network (ansible-net)
+# d network inspect ansible-net
 # Containers.Name..Name=slave-node.IPv4Address = 192.168.117.2/24
 
 # Go inside the Master container and create the Inventory file that your instructor mentioned.
@@ -123,7 +124,7 @@ d run -d \
 ansible-master`
 ```
 
-- Also, update Inventory
+- Also, update Inventory (maybe use yaml instead of ini)
 
 ```bash
 [all_slaves]
@@ -143,7 +144,7 @@ d run -d \
 ansible-master
 ```
 
-Don't forget to create `hosts` in the project file
+Don't forget to create the hosts file (inventory) in the project file
 
 ```bash
 [all_slaves]

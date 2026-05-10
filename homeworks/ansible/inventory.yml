@@ -1,0 +1,6 @@
+all:
+  children:
+    all_slaves:
+      hosts:
+        slave-node:
+          ansible_user: root

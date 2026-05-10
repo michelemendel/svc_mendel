@@ -1,0 +1,37 @@
+- name: Deploy Flask app
+  hosts: all_slaves
+  tasks:
+    - name: Create app directory on slaves
+      file:
+        path: /app
+        state: directory
+        mode: '0755'
+
+    - name: Install Python and pip
+      apt:
+        name:
+          - python3
+          - python3-pip
+        update_cache: yes
+
+    - name: Copy requirements.txt to slave
+      copy:
+        src: requirements.txt
+        dest: /app/requirements.txt
+
+    - name: Install Python dependencies
+      pip:
+        requirements: /app/requirements.txt
+
+    - name: Copy app.py to slave
+      copy:
+        src: app.py
+        dest: /app/app.py
+
+    - name: Stop Flask app if running
+      shell: pkill -fx 'python3 /app/app.py' || true
+
+    - name: Start Flask app
+      shell: nohup python3 /app/app.py >/var/log/app.log 2>&1 &
+      args:
+        chdir: /app

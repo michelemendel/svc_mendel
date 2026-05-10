@@ -17,3 +17,6 @@ __pycache__
 
 # Environment variables
 .env
+
+*_key
+*_key.pub
