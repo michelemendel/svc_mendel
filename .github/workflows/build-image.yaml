@@ -27,6 +27,6 @@ jobs:
         with:
           context: ./labs/gh_actions
           push: true
-          tags: mmendel/svc-gh-lab:latest
+          tags: mmendel/svc-lab-ghactions:latest
       - name: Logout from Docker Hub
         run: docker logout
